@@ -6,8 +6,10 @@ A React Native library for integrating [Honeybadger](https://honeybadger.io) int
 
 From the root directory of your React Native project:
 
-    npx react-native install "@honeybadger-io/react-native"
-    cd ios && pod install
+```shell
+npx react-native install "@honeybadger-io/react-native"
+cd ios && pod install
+```
 
 The above will download the Honeybadger React Native library and add it as a dependency of your project. The iOS step is required to properly add the library to the Xcode project through CocoaPods. Android doesn't require a separate step.
 
@@ -15,15 +17,16 @@ The above will download the Honeybadger React Native library and add it as a dep
 
 Add the following to your **App.js** file to initialize the Honeybadger library.
 
-	import Honeybadger from '@honeybadger-io/react-native';
+```js
+import Honeybadger from "@honeybadger-io/react-native";
 
-	export default function App() {
-		Honeybadger.configure('Your Honeybadger API key');
-		// ...
-	}
+export default function App() {
+  Honeybadger.configure("Your Honeybadger API key");
+  // ...
+}
+```
 
 You can log into your [Honeybadger](https://honeybadger.io) account to obtain your API key.
-
 
 ## Usage Examples
 
@@ -37,11 +40,13 @@ You can use the **notify** method to send any kind of error, exception, object, 
 
 If you have data that you would like to include whenever an error or an exception occurs, you can provide that data using the **setContext** method. Provide an object as an argument. You can call **setContext** as many times as needed. New context data will be merged with any previously-set context data.
 
-	Honeybadger.setContext({
-		'user_id': '123abc',
-		'more': 'some additional data'
-	});
-	
+```js
+Honeybadger.setContext({
+  user_id: "123abc",
+  more: "some additional data",
+});
+```
+
 ### Honeybadger.resetContext()
 
 If you've used **Honeybadger.setContext()** to store context data, you can use **Honeybadger.resetContext()** to clear that data.
@@ -50,7 +55,9 @@ If you've used **Honeybadger.setContext()** to store context data, you can use *
 
 This package includes a script that will help you generate source maps for your project. To generate source maps for both iOS and Android, run the following from your project root directory.
 
-	npx honeybadger-generate-sourcemaps
+```shell
+npx honeybadger-generate-sourcemaps
+```
 
 The operation might take some time, as React Native needs to build production-ready bundles and their respective source map files for both iOS and Android. Upon completion, you will find the **sourcemap-ios** and **sourcemap-android** files in your project root directory. You can then [upload these files to Honeybadger](https://docs.honeybadger.io/lib/javascript/guides/using-source-maps.html) to view descriptive stack trace symbols in your production builds.
 
