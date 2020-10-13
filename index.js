@@ -53,7 +53,7 @@ const honeybadger = {
             return;
         }
 
-        if ( !err || (isString(val) && val.trim().length === 0) || (isObject(val) && val.length === 0) ) {
+        if ( !err || (isString(err) && err.trim().length === 0) || (isObject(err) && err.length === 0) ) {
             console.error('Honeybadger.notify() - invalid error');
             return;
         }
@@ -340,7 +340,7 @@ function framesFromJavaScriptErrorStack(stack) {
                 number: +parts[4]
             });
         } else if ( line.indexOf('[native code]') !== -1 ) {
-            parts = line.split('@');
+            let parts = line.split('@');
             if ( parts && parts.length === 2 ) {
                 frames.push({
                     file: parts[1],

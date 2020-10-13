@@ -15,7 +15,7 @@ The above will download the Honeybadger React Native library and add it as a dep
 
 Add the following to your **App.js** file to initialize the Honeybadger library.
 
-	import Honeybadger from 'honeybadger-react-native';
+	import Honeybadger from '@honeybadger-io/react-native';
 
 	export default function App() {
 		Honeybadger.configure('Your Honeybadger API key');
