@@ -1,5 +1,5 @@
 {
-    "name": "honeybadger-react-native",
+    "name": "@honeybadger-io/react-native",
     "version": "0.0.1",
     "description": "Honeybadger.io for React Native.",
     "author": "Andrey Butov <andreybutov@antair.com> (https://andreybutov.com)",
