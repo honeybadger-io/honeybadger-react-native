@@ -37,10 +37,7 @@ const honeybadger = {
 
         setNativeExceptionHandler();
         
-        if ( Platform.OS === 'android' ) {
-            // The HB iOS native module picks up JavaScript exceptions as well. Android does not.
-            setJavaScriptErrorHandler();
-        }
+        setJavaScriptErrorHandler();
 
         _initialized = true;
     },
