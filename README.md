@@ -61,6 +61,16 @@ npx honeybadger-generate-sourcemaps
 
 The operation might take some time, as React Native needs to build production-ready bundles and their respective source map files for both iOS and Android. Upon completion, you will find the **sourcemap-ios** and **sourcemap-android** files in your project root directory. You can then [upload these files to Honeybadger](https://docs.honeybadger.io/lib/javascript/guides/using-source-maps.html) to view descriptive stack trace symbols in your production builds.
 
+## Example Project
+
+The **example** directory contains a minimal React Native project, demonstrating the use of the Honeybadger library. To run the project, first, open **App.js** and enter your Honeybadger API key. Once that's done, run the following:
+
+```shell
+npm install
+npx react-native start
+npx react-native run-ios
+```
+
 ## License
 
 The Honeybadger React Native library is MIT-licensed. See the LICENSE file in this repository for details.
