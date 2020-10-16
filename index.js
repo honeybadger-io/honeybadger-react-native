@@ -332,9 +332,10 @@ function framesFromJavaScriptErrorStack(stack) {
         const parts = javaScriptCoreRe.exec(line);
         if ( parts ) {
             frames.push({
-                file: parts[3],
+                file: parts[3] || '',
                 method: parts[1] || '',
-                number: +parts[4]
+                number: (parts[4] ? +parts[4] : ''),
+                column: (parts[5] ? +parts[5] : ''),
             });
         } else if ( line.indexOf('[native code]') !== -1 ) {
             let parts = line.split('@');
@@ -342,7 +343,8 @@ function framesFromJavaScriptErrorStack(stack) {
                 frames.push({
                     file: parts[1],
                     method: parts[0],
-                    number: ''
+                    number: '',
+                    column: '',
                 });
             }
         }
