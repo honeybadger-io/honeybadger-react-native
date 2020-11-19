@@ -504,7 +504,7 @@ function framesFromIOSCallStack(data) {
     }
 
     let frames = [];
-    const regex = /\d+\s+(?<moduleName>\S+)\s+\S+\s(?<functionName>.+)\s\+\s(?<lineNumber>\d+)/gm;
+    const regex = /\d+\s+(?<moduleName>\S+)\s+(?<memoryAddress>\S+)\s(?<functionName>.+)\s\+\s(?<lineNumber>\d+)/gm;
     let match;
     callStack.forEach(element => {
         while ( (match = regex.exec(element)) !== null ) {
@@ -512,6 +512,7 @@ function framesFromIOSCallStack(data) {
                 regex.lastIndex++;
             }
             frames.push({
+                address: match.groups.memoryAddress || '',
                 method: match.groups.functionName || '',
                 file: match.groups.moduleName || '',
                 number: match.groups.lineNumber || '',
