@@ -405,6 +405,7 @@ function onNativeIOSException(data)
             errorDomain: data.errorDomain || '',
             initialHandler: data.initialHandler || '',
             userInfo: data.userInfo || {},
+            architecture: data.architecture || '',
         },
         context: _context || {},
     };
@@ -504,18 +505,23 @@ function framesFromIOSCallStack(data) {
     }
 
     let frames = [];
-    const regex = /\d+\s+(?<moduleName>\S+)\s+(?<memoryAddress>\S+)\s(?<functionName>.+)\s\+\s(?<lineNumber>\d+)/gm;
+    const regex = /\d+\s+(?<moduleName>\S+)\s+(?<stackAddress>\S+)\s(?<loadAddress>.+)\s\+\s(?<symbolOffset>\d+)(\s+\((?<file>\S+):(?<line>\S+)\))?/gm;
     let match;
     callStack.forEach(element => {
         while ( (match = regex.exec(element)) !== null ) {
             if ( match.index === regex.lastIndex) {
                 regex.lastIndex++;
             }
+            
+            let file = '';
+            if ( match.groups.file ) file = match.groups.file;
+            else if ( match.groups.moduleName ) file = match.groups.moduleName;
+
             frames.push({
-                address: match.groups.memoryAddress || '',
-                method: match.groups.functionName || '',
-                file: match.groups.moduleName || '',
-                number: match.groups.lineNumber || '',
+                file: file,
+                line: match.groups.line || '',
+                method: match.groups.loadAddress || '',
+                stackAddress: match.groups.stackAddress || '',
             });
         }
     });

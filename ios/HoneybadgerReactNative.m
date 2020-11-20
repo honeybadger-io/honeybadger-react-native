@@ -7,9 +7,14 @@
 //
 
 
+
 #import "HoneybadgerReactNative.h"
 #import "RCTAssert.h"
 #include <execinfo.h>
+#import <mach-o/arch.h>
+#include <mach-o/dyld.h>
+#include <dlfcn.h>
+
 
 
 @implementation HoneybadgerReactNative
@@ -43,9 +48,6 @@ RCT_EXPORT_METHOD(start)
 }
 
 
-//
-// INTERNAL
-//
 
 - (void) onCFuncCaughtException:(NSNotification*)notification
 {
@@ -84,6 +86,7 @@ RCT_EXPORT_METHOD(start)
     
     NSDictionary* crashData = @{
         @"type" : @"Exception",
+        @"architecture" : [self getArchitecture],
         @"reactNativeStackTrace" : reactNativeStackTrace ? reactNativeStackTrace : @[],
         @"name" : [self safe:e.name],
         @"reason" : [self safe:e.reason],
@@ -116,6 +119,7 @@ RCT_EXPORT_METHOD(start)
     
     [self sendEventWithName:@"native-exception-event" body:@{
         @"type" : @"Error",
+        @"architecture" : [self getArchitecture],
         @"errorDomain" : errorDomain,
         @"localizedDescription" : localizedDescription,
         @"reactNativeStackTrace" : reactNativeStackTrace ? reactNativeStackTrace : @[],
@@ -133,8 +137,17 @@ RCT_EXPORT_METHOD(start)
 
     [self sendEventWithName:@"native-exception-event" body:@{
         @"type" : @"Signal",
+        @"architecture" : [self getArchitecture],
         @"initialHandler" : handler
     }];
+}
+
+
+
+- (NSString*) getArchitecture
+{
+    const NXArchInfo* info = NXGetLocalArchInfo();
+    return [NSString stringWithUTF8String:info->name];
 }
 
 
