@@ -67,6 +67,7 @@ The **example** directory contains a minimal React Native project, demonstrating
 
 ```shell
 npm install
+cd ios ; pod install ; cd -
 npx react-native start
 npx react-native run-ios
 ```
