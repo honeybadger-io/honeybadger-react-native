@@ -521,7 +521,7 @@ function framesFromIOSCallStack(data) {
                 file: file,
                 line: match.groups.line || '',
                 method: match.groups.loadAddress || '',
-                stackAddress: match.groups.stackAddress || '',
+                stack_address: match.groups.stackAddress || '',
             });
         }
     });
