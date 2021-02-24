@@ -24,22 +24,20 @@ const honeybadger = {
 
     configure ( apiKey )
     {
-        if ( _initialized ) {
-            return;
-        }
-
-        if ( !isValidAPIKey(apiKey) ) {
+        if ( !isValidAPIKey(apiKey) ) 
+        {
             informUserOfInvalidAPIKey();
             return;
         }
-
-        _apiKey = apiKey.trim();
-
-        setNativeExceptionHandler();
         
-        setJavaScriptErrorHandler();
-
-        _initialized = true;
+        _apiKey = apiKey.trim();
+        
+        if ( !_initialized ) 
+        {
+            setNativeExceptionHandler();
+            setJavaScriptErrorHandler();
+            _initialized = true;
+        }
     },
 
 
