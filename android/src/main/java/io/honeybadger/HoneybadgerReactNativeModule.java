@@ -2,7 +2,7 @@
 // Honeybadger React Native
 //
 
-package com.reactlibrary;
+package io.honeybadger;
 
 
 import android.os.Handler;
