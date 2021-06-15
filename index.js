@@ -242,20 +242,21 @@ function buildPayload ( data ) {
 function framesFromComponentStack(str) {
     str = str || '';
     let frames = [];
-    const regex = /^\s*in\s(?<methodName>\S+)(\s\(at\s(?<file>\S+):(?<lineNumber>\S+)\)\s*$)?/gm;
+    const regex = /^\s*in\s(\S+)(\s\(at\s(\S+):(\S+)\)\s*$)?/gm;
     let match;
     while ( (match = regex.exec(str)) !== null ) {
         if ( match.index === regex.lastIndex) {
             regex.lastIndex++;
         }
         frames.push({
-            method: match.groups.methodName || '',
-            file: match.groups.file || '',
-            number: match.groups.lineNumber || '',
+            method: match && match.length > 1 ? match[1] : '',
+            file: match && match.length > 3 ? match[3] : '',
+            number: match && match.length > 4 ? match[4] : '',
         });
     }
     return frames;
 }
+
 
 
 
@@ -503,23 +504,26 @@ function framesFromIOSCallStack(data) {
     }
 
     let frames = [];
-    const regex = /\d+\s+(?<moduleName>\S+)\s+(?<stackAddress>\S+)\s(?<loadAddress>.+)\s\+\s(?<symbolOffset>\d+)(\s+\((?<file>\S+):(?<line>\S+)\))?/gm;
+    const regex = /\d+\s+(\S+)\s+(\S+)\s(.+)\s\+\s(\d+)(\s+\((\S+):(\S+)\))?/gm;
     let match;
     callStack.forEach(element => {
         while ( (match = regex.exec(element)) !== null ) {
             if ( match.index === regex.lastIndex) {
                 regex.lastIndex++;
             }
-            
-            let file = '';
-            if ( match.groups.file ) file = match.groups.file;
-            else if ( match.groups.moduleName ) file = match.groups.moduleName;
+
+            let moduleName = match && match.length > 1 ? match[1] : '';
+            let stackAddress = match && match.length > 2 ? match[2] : '';
+            let loadAddress = match && match.length > 3 ? match[3] : '';
+            // let symbolOffset = match && match.length > 4 ? match[4] : '';
+            let file = match && match.length > 6 ? match[6] : '';
+            let line = match && match.length > 7 ? match[7] : '';
 
             frames.push({
-                file: file,
-                line: match.groups.line || '',
-                method: match.groups.loadAddress || '',
-                stack_address: match.groups.stackAddress || '',
+                file: file || moduleName || '',
+                line: line || '',
+                method: loadAddress || '',
+                stack_address: stackAddress || '',
             });
         }
     });
