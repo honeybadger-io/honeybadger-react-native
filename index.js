@@ -13,26 +13,25 @@ const HoneybadgerNativeModule = NativeModules.HoneybadgerReactNative;
 let _apiKey = null;
 let _initialized = false;
 let _context = {};
-
+let _logLevel = "warning"; // "error", "warning", "debug"
 
 
 // ----------------------------------------------------------------------------
 // Public Interface
 // ----------------------------------------------------------------------------
-
 const honeybadger = {
 
     configure ( apiKey )
     {
-        if ( !isValidAPIKey(apiKey) ) 
+        if ( !isValidAPIKey(apiKey) )
         {
             informUserOfInvalidAPIKey();
             return;
         }
-        
+
         _apiKey = apiKey.trim();
-        
-        if ( !_initialized ) 
+
+        if ( !_initialized )
         {
             setNativeExceptionHandler();
             setJavaScriptErrorHandler();
@@ -49,7 +48,7 @@ const honeybadger = {
         }
 
         if ( !err || (isString(err) && err.trim().length === 0) || (isObject(err) && err.length === 0) ) {
-            console.error('Honeybadger.notify() - invalid error');
+            logError("Honeybadger.notify() - invalid error");
             return;
         }
 
@@ -113,6 +112,26 @@ const honeybadger = {
     {
         _context = (isObject(context) ? context : {});
     },
+
+
+    setLogLevel ( level = "warning" )
+    {
+        if ( !level ) {
+            return;
+        }
+
+        switch (level.toLowerCase())
+        {
+            case "debug":
+            case "warning":
+            case "error":
+                _logLevel = level.toLowerCase();
+                break;
+
+            default:
+                logWarning("Honeybadger: Log level should be one of 'debug', 'warning', or 'error'.");
+        }
+    }
 };
 
 
@@ -125,9 +144,8 @@ export default honeybadger;
 // -----------------------------------------------------------------------------
 
 function informUserOfInvalidAPIKey() {
-    console.error('Please initialize Honeybadger by calling configure() with a valid Honeybadger.io API key.');
+    logError('Please initialize Honeybadger by calling configure() with a valid Honeybadger.io API key.');
 }
-
 
 
 function isValidAPIKey(apiKey) {
@@ -135,11 +153,10 @@ function isValidAPIKey(apiKey) {
 }
 
 
-
 function setJavaScriptErrorHandler() {
-    console.log("Setting up the JavaScript global error handler.");
+    logDebug("Setting up the JavaScript global error handler.");
     global.ErrorUtils.setGlobalHandler(function(err, isFatal) {
-        console.log("JavaScript global error handler triggered.");
+        logDebug("JavaScript global error handler triggered.");
         onJavaScriptError(err, {
             initialHandler: 'Global JavaScript Error Handler',
         });
@@ -150,16 +167,16 @@ function setJavaScriptErrorHandler() {
 
 function setNativeExceptionHandler() {
     if ( !HoneybadgerNativeModule ) {
-        console.error('honeybadger-react-native: The native module was not found. Please review the installation instructions.');
+        logError('Honeybadger: The native module was not found. Please review the installation instructions.');
         return;
     }
 
-    // console.log("Starting HoneyBadger native module.");
+    logDebug("Starting HoneyBadger native module.");
     HoneybadgerNativeModule.start();
 
     const nativeEventEmitter = new NativeEventEmitter(HoneybadgerNativeModule);
-    
-    console.log("Listening for native exceptions...");
+
+    logDebug("Listening for native exceptions...");
     nativeEventEmitter.addListener('native-exception-event', function(data) {
         switch ( Platform.OS ) {
             case 'ios': onNativeIOSException(data); break;
@@ -188,10 +205,11 @@ function sendToHoneybadger(payload) {
 
     fetch('https://api.honeybadger.io/v1/notices/js', params).then(response => {
         if ( !response.ok ) {
-            console.log(`Failed to post error to Honeybadger: ${response.status}`);
-            console.log(response);
+            logDebug(`Failed to post error to Honeybadger: ${response.status}`);
+            logDebug(response);
         } else {
-            // console.log(response);
+            logDebug('Successful post to Honeybadger.');
+            logDebug(response);
         }
     });
 }
@@ -259,6 +277,29 @@ function framesFromComponentStack(str) {
 
 
 
+function logDebug(data) {
+    if ( data && _logLevel.toLowerCase() === "debug" ) {
+        console.log(data);
+    }
+}
+
+
+
+function logWarning(data) {
+    if ( data && _logLevel.toLowerCase() === "warning" || _logLevel.toLowerCase() === "error" ) {
+        console.warn(data);
+    }
+}
+
+
+
+function logError(data) {
+    if ( data ) {
+        console.error(data);
+    }
+}
+
+
 
 // ----------------------------------------------------------------------------
 // JavaScript
@@ -324,7 +365,7 @@ function backTraceFromJavaScriptError(err) {
 
 function framesFromJavaScriptErrorStack(stack) {
     let frames = [];
-    var lines = stack.split('\n');
+    let lines = stack.split('\n');
     const javaScriptCoreRe = /^\s*(?:([^@]*)(?:\((.*?)\))?@)?(\S.*?):(\d+)(?::(\d+))?\s*$/i;
     for ( let i = 0 ; i < lines.length ; ++i ) {
         const line = lines[i];
