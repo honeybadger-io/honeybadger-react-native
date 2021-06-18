@@ -14,6 +14,8 @@ let _apiKey = null;
 let _initialized = false;
 let _context = {};
 let _logLevel = "warning"; // "error", "warning", "debug"
+let _previousJSGlobalExceptionHandler = null;
+
 
 
 // ----------------------------------------------------------------------------
@@ -153,13 +155,26 @@ function isValidAPIKey(apiKey) {
 }
 
 
-function setJavaScriptErrorHandler() {
+
+function setJavaScriptErrorHandler() 
+{
     logDebug("Setting up the JavaScript global error handler.");
+    
+    _previousJSGlobalExceptionHandler = global.ErrorUtils.getGlobalHandler();
+
     global.ErrorUtils.setGlobalHandler(function(err, isFatal) {
         logDebug("JavaScript global error handler triggered.");
+
         onJavaScriptError(err, {
             initialHandler: 'Global JavaScript Error Handler',
         });
+
+        // Allowing the default error handler to process the error after
+        // we're done with it will show the useful RN red info box in dev. 
+        if ( _previousJSGlobalExceptionHandler && _previousJSGlobalExceptionHandler != this ) {
+            logDebug("Passing error to previous error handler.");
+            _previousJSGlobalExceptionHandler(err, isFatal);
+        }
     });
 }
 
