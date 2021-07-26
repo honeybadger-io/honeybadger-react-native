@@ -21,7 +21,7 @@ if [[ ! -f "$INDEX_FILE" ]]; then
 	if [[ -f "$PROJECT_ROOT_DIR/index.tsx" ]]; then
 		INDEX_FILE="$PROJECT_ROOT_DIR/index.tsx"
 	else
-		if [[ -f "index.ts" ]]; then
+		if [[ -f "$PROJECT_ROOT_DIR/index.ts" ]]; then
 			INDEX_FILE="$PROJECT_ROOT_DIR/index.ts"
 		else
 			echo "Couldn't find index file"
