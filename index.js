@@ -15,6 +15,8 @@ let _initialized = false;
 let _context = {};
 let _logLevel = "warning"; // "error", "warning", "debug"
 let _previousJSGlobalExceptionHandler = null;
+let _revision = "";
+let _projectRoot = "";
 
 
 
@@ -23,7 +25,7 @@ let _previousJSGlobalExceptionHandler = null;
 // ----------------------------------------------------------------------------
 const honeybadger = {
 
-    configure ( apiKey )
+    configure ( apiKey, revision = '', projectRoot = '' )
     {
         if ( !isValidAPIKey(apiKey) )
         {
@@ -32,6 +34,8 @@ const honeybadger = {
         }
 
         _apiKey = apiKey.trim();
+        _revision = (revision || '').trim();
+        _projectRoot = (projectRoot || '').trim();
 
         if ( !_initialized )
         {
@@ -258,6 +262,8 @@ function buildPayload ( data ) {
         },
         server : {
             environment_name: (__DEV__ ? "development" : "production"),
+            project_root: _projectRoot || '',
+            revision: _revision || ''
         },
     };
 
