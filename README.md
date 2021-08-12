@@ -72,6 +72,27 @@ Honeybadger.setContext({
 
 If you've used **Honeybadger.setContext()** to store context data, you can use **Honeybadger.resetContext()** to clear that data.
 
+### Honeybadger.setLogLevel(logLevel)
+
+Sets the logging level for the Honeybadger library. 
+
+```js
+  Honeybadger.setLogLevel("debug");
+```
+
+The following values are accepted:
+
+| Value | Meaning | 
+| ----- | ---- | 
+| "debug" | Everything will be logged to console. |
+| "warning" | Only warnings will be logged to console. |
+| "error" | Only errors will be logged to console. |
+
+
+The default logging level is "warning".
+
+
+
 ## Source Maps
 
 This package includes a script that will help you generate source maps for your project. To generate source maps for both iOS and Android, run the following from your project root directory.
