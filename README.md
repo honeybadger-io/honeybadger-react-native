@@ -29,6 +29,26 @@ export default function App() {
 
 You can log into your [Honeybadger](https://honeybadger.io) account to obtain your API key.
 
+
+## Configuration
+
+The configure method takes additional configuration options.
+
+| Name | Type | Required | Default | Example | 
+| ----- | ---- | ------- | ------- | ------- | 
+| apiKey | String | YES | `""` | `"hb-api-key-1234"` |
+| revision | String | NO | `""` | `"8afb34a"` |
+| projectRoot | String | NO | `""` | `"/path/to/project"` |
+
+```js
+  Honeybadger.configure(
+    "hb-api-key-1234",
+    "8afb34a",
+    "/path/to/project"
+  );
+```
+
+
 ## Usage Examples
 
 iOS, Android, and JavaScript errors will be automatically handled by the Honeybadger React Native library, by default. But you can also use the following API to customize error handling in your application.
