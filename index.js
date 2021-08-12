@@ -25,6 +25,12 @@ let _projectRoot = "";
 // ----------------------------------------------------------------------------
 const honeybadger = {
 
+    /**
+     * Initialize and configure the Honeybadger React Native library.
+     * @param {string} apiKey - Your Honeybadger API key.
+     * @param {string=} revision - The git revision of the current build.
+     * @param {string=} projectRoot - The path to the project root.
+     */
     configure ( apiKey, revision = '', projectRoot = '' )
     {
         if ( !isValidAPIKey(apiKey) )
@@ -45,7 +51,11 @@ const honeybadger = {
         }
     },
 
-
+    /**
+     * Send any kind of error, exception, object, String, etc. to Honeybadger.
+     * @param {string|object} err - The error string or object.
+     * @param {string|object} additionalData - Additional data to include with the error.
+     */
     notify ( err, additionalData )
     {
         if ( !isValidAPIKey(_apiKey) ) {
@@ -106,6 +116,10 @@ const honeybadger = {
     },
 
 
+    /**
+     * Include additional data whenever an error or an exception occurs. This can be called as many times as needed. New context data will be merged with any previously-set context data.
+     * @param {object} context - Additional data to include with all errors and exceptions.
+     */
     setContext ( context )
     {
         if ( isObject(context) ) {
@@ -114,12 +128,20 @@ const honeybadger = {
     },
 
 
+    /**
+     * Clears/resets any data previously set through setContext().
+     * @param {object=} context - Optional new context to set.
+     */
     resetContext ( context )
     {
         _context = (isObject(context) ? context : {});
     },
 
 
+    /**
+     * Sets the logging level for the Honeybadger library. 
+     * @param {('debug'|'warning'|'error')} [level=warning] - The logging level.
+     */
     setLogLevel ( level = "warning" )
     {
         if ( !level ) {
