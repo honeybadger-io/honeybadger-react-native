@@ -17,6 +17,7 @@ let _logLevel = "warning"; // "error", "warning", "debug"
 let _previousJSGlobalExceptionHandler = null;
 let _revision = "";
 let _projectRoot = "";
+let _reportErrors = true;
 
 
 
@@ -28,10 +29,11 @@ const honeybadger = {
     /**
      * Initialize and configure the Honeybadger React Native library.
      * @param {string} apiKey - Your Honeybadger API key.
+     * @param {boolean} [reportErrors=true] reportErrors - Whether to send error reports to Honeybadger (disable for dev environments, etc.)
      * @param {string=} revision - The git revision of the current build.
      * @param {string=} projectRoot - The path to the project root.
      */
-    configure ( apiKey, revision = '', projectRoot = '' )
+    configure ( apiKey, reportErrors = true, revision = '', projectRoot = '' )
     {
         if ( !isValidAPIKey(apiKey) )
         {
@@ -42,6 +44,7 @@ const honeybadger = {
         _apiKey = apiKey.trim();
         _revision = (revision || '').trim();
         _projectRoot = (projectRoot || '').trim();
+        _reportErrors = reportErrors;
 
         if ( !_initialized )
         {
@@ -229,9 +232,12 @@ function setNativeExceptionHandler() {
 
 
 function sendToHoneybadger(payload) {
-    if ( !payload || !isValidAPIKey(_apiKey) ) {
+    if ( !payload || !isValidAPIKey(_apiKey) || !_reportErrors ) {
         return;
     }
+
+
+    logDebug("Sending error report to Honeybadger...");
 
     const params = {
         method: 'POST',

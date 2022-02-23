@@ -37,6 +37,7 @@ The configure method takes additional configuration options.
 | Name | Type | Required | Default | Example | 
 | ----- | ---- | ------- | ------- | ------- | 
 | apiKey | String | YES | `""` | `"hb-api-key-1234"` |
+| reportErrors | Boolean | NO | true |
 | revision | String | NO | `""` | `"8afb34a"` |
 | projectRoot | String | NO | `""` | `"/path/to/project"` |
 
@@ -47,6 +48,8 @@ The configure method takes additional configuration options.
     "/path/to/project"
   );
 ```
+
+The **reportErrors** parameter determines if errors are to be sent to Honeybadger. This is set to **true** by default. In certain environments, say, during development, it could be useful to set **reportErrors** to **false** to prevent errors from being posted to your Honeybadger account.
 
 
 ## Usage Examples
