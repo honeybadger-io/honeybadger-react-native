@@ -3,17 +3,19 @@ declare namespace honeybadger {
     /**
      * Initialize and configure the Honeybadger React Native library.
      * @param {string} apiKey - Your Honeybadger API key.
+     * @param {boolean} [reportErrors=true] reportErrors - Whether to send error reports to Honeybadger (disable for dev environments, etc.)
      * @param {string=} revision - The git revision of the current build.
      * @param {string=} projectRoot - The path to the project root.
      */
-    function configure(apiKey: string, revision?: string, projectRoot?: string): void;
+    function configure(apiKey: string, reportErrors?: boolean, revision?: string, projectRoot?: string): void;
     /**
      * Initialize and configure the Honeybadger React Native library.
      * @param {string} apiKey - Your Honeybadger API key.
+     * @param {boolean} [reportErrors=true] reportErrors - Whether to send error reports to Honeybadger (disable for dev environments, etc.)
      * @param {string=} revision - The git revision of the current build.
      * @param {string=} projectRoot - The path to the project root.
      */
-    function configure(apiKey: string, revision?: string, projectRoot?: string): void;
+    function configure(apiKey: string, reportErrors?: boolean, revision?: string, projectRoot?: string): void;
     /**
      * Send any kind of error, exception, object, String, etc. to Honeybadger.
      * @param {string|object} err - The error string or object.
