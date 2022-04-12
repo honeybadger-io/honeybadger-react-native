@@ -85,6 +85,18 @@ public class HoneybadgerReactNativeModule extends ReactContextBaseJavaModule {
         );
     }
 
+    // Required for React-Native built in EventEmitter Calls.
+    @ReactMethod
+    public void addListener(String eventName) {
+
+    }
+
+    // Required for React-Native built in EventEmitter Calls.
+    @ReactMethod
+    public void removeListeners(Integer count) {
+
+    }
+
     private Throwable getRootCause ( Throwable throwable ) {
         Throwable cause = throwable.getCause();
         return cause == null ? throwable : getRootCause(cause);
