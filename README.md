@@ -8,7 +8,7 @@ A React Native library for integrating [Honeybadger](https://honeybadger.io) int
 From the root directory of your React Native project:
 
 ```shell
-npx react-native install "@honeybadger-io/react-native"
+npm install "@honeybadger-io/react-native"
 cd ios && pod install
 ```
 
