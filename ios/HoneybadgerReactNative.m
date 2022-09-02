@@ -9,7 +9,7 @@
 
 
 #import "HoneybadgerReactNative.h"
-#import "RCTAssert.h"
+#import <React/RCTAssert.h>
 #include <execinfo.h>
 #import <mach-o/arch.h>
 #include <mach-o/dyld.h>
