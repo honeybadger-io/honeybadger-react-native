@@ -1,6 +1,8 @@
 # Honeybadger for React Native
 [![npm version](https://badge.fury.io/js/%40honeybadger-io%2Freact-native.svg)](https://badge.fury.io/js/%40honeybadger-io%2Freact-native)
 
+> Note: This repository has been moved to [@honeybadger-io/js](https://github.com/honeybadger-io/honeybadger-js), home to all Honeybadger's JavaScript packages.
+
 A React Native library for integrating [Honeybadger](https://honeybadger.io) into your React Native iOS and Android apps.
 
 ## Installation
